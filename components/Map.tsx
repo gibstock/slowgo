@@ -311,8 +311,8 @@ export default function Map() {
                 <span className="text-2xl mr-3">📱</span>
                 <span>
                   For the best experience, **install this app to your home
-                  screen** using your browser's "Add to Home Screen" or "Install
-                  App" option.
+                  screen** using your browser&apos;s &quot;Add to Home
+                  Screen&quot; or &quot;Install App&quot; option.
                 </span>
               </p>
             </div>
