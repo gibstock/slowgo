@@ -128,7 +128,7 @@ export default function Map() {
   const [userHeading, setUserHeading] = useState<number | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const wakeLockSentinelRef = useRef<any | null>(null);
+  const wakeLockSentinelRef = useRef<WakeLockSentinel | null>(null);
 
   // Initialize the Audio object on the client side
   useEffect(() => {
@@ -216,7 +216,7 @@ export default function Map() {
         }
       }
     }
-  }, [userPosition, cameras, activeAlert]);
+  }, [userPosition, cameras, activeAlert, userHeading]);
 
   // useEffect to handle re-acquiring the wake lock when the tab becomes visible again
   useEffect(() => {
@@ -230,8 +230,12 @@ export default function Map() {
             'screen'
           );
           console.log('Screen Wake Lock re-acquired.');
-        } catch (err: any) {
-          console.error(`${err.name}, ${err.message}`);
+        } catch (err: unknown) {
+          if (err instanceof Error) {
+            console.error(`${err.name}, ${err.message}`);
+          } else {
+            console.error('An unknown error occurred:', err);
+          }
         }
       }
     };
@@ -257,8 +261,12 @@ export default function Map() {
         );
         console.log('Screen Wake Lock is active.');
       }
-    } catch (err: any) {
-      console.error(`${err.name}, ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(`${err.name}, ${err.message}`);
+      } else {
+        console.error('An unknown error occured: ', err);
+      }
     }
   };
 
