@@ -1,8 +1,16 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  Circle,
+} from 'react-leaflet';
 import { Icon, LatLngExpression } from 'leaflet';
+import React from 'react';
 
 // Helper function to calculate distance between two lat/lng points in kilometers
 function haversineDistance(
@@ -22,6 +30,25 @@ function haversineDistance(
       Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // Distance in kilometers
+}
+
+// Calculates the bearing from point 1 to point 2 in degrees
+function calculateBearing(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) {
+  const y =
+    Math.sin((lon2 - lon1) * (Math.PI / 180)) *
+    Math.cos(lat2 * (Math.PI / 180));
+  const x =
+    Math.cos(lat1 * (Math.PI / 180)) * Math.sin(lat2 * (Math.PI / 180)) -
+    Math.sin(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.cos((lon2 - lon1) * (Math.PI / 180));
+  const brng = Math.atan2(y, x) * (180 / Math.PI);
+  return (brng + 360) % 360; // Normalize to 0-360
 }
 
 function AlertBanner({
@@ -72,6 +99,11 @@ const userIcon = new Icon({
   iconAnchor: [12, 41],
 });
 
+const alertCameraIcon = new Icon({
+  iconUrl: 'https://cdn-icons-png.flaticon.com/512/10451/10451638.png',
+  iconSize: [45, 45], // Make it slightly larger
+});
+
 // A component to automatically pan the map to the user's location
 function ChangeView({
   center,
@@ -93,8 +125,10 @@ export default function Map() {
 
   const [activeAlert, setActiveAlert] = useState<Camera | null>(null);
   const [isTracking, setIsTracking] = useState(false);
+  const [userHeading, setUserHeading] = useState<number | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const wakeLockSentinelRef = useRef<any | null>(null);
 
   // Initialize the Audio object on the client side
   useEffect(() => {
@@ -113,8 +147,9 @@ export default function Map() {
 
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
+        const { latitude, longitude, heading } = position.coords;
         setUserPosition([latitude, longitude]);
+        setUserHeading(heading);
       },
       (error) => console.error('Error getting user location:', error),
       { enableHighAccuracy: true }
@@ -146,31 +181,95 @@ export default function Map() {
       const alertThreshold = 0.3048; // 1000 feet
 
       if (distance < alertThreshold) {
-        // --- TRIGGER THE BANNER ---
-        setActiveAlert(camera);
+        if (userHeading !== null) {
+          const cameraBearing = calculateBearing(
+            userLat,
+            userLng,
+            camera.latitude,
+            camera.longitude
+          );
+          const angleDiff = Math.abs(
+            ((userHeading - cameraBearing + 180) % 360) - 180
+          );
+          const angleTolerance = 45; // Allow a 45-degree variance
 
-        // Play sound using the persistent audio object
-        if (audioRef.current) {
-          audioRef.current.currentTime = 0; // Rewind to the start
-          audioRef.current.play();
+          // Only alert if the user's heading is towards the camera
+          if (angleDiff <= angleTolerance) {
+            setActiveAlert(camera);
+            if (audioRef.current) {
+              audioRef.current.currentTime = 0;
+              audioRef.current.play();
+            }
+            if (navigator.vibrate) {
+              navigator.vibrate([200, 100, 200]); // Vibrate 200ms, pause 100ms, vibrate 200ms
+            }
+            break;
+          }
+        } else {
+          // Fallback for devices that don't provide a heading: alert based on distance alone
+          setActiveAlert(camera);
+          if (audioRef.current) {
+            audioRef.current.currentTime = 0;
+            audioRef.current.play();
+          }
+          break;
         }
-
-        break;
       }
     }
-  }, [userPosition, cameras, activeAlert]); // Dependency array updated
+  }, [userPosition, cameras, activeAlert]);
 
-  const handleStartTracking = () => {
+  // useEffect to handle re-acquiring the wake lock when the tab becomes visible again
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (
+        wakeLockSentinelRef.current !== null &&
+        document.visibilityState === 'visible'
+      ) {
+        try {
+          wakeLockSentinelRef.current = await navigator.wakeLock.request(
+            'screen'
+          );
+          console.log('Screen Wake Lock re-acquired.');
+        } catch (err: any) {
+          console.error(`${err.name}, ${err.message}`);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  const handleStartTracking = async () => {
     setIsTracking(true);
     if (audioRef.current) {
       audioRef.current.play().catch(() => {}); // Play and ignore errors
       audioRef.current.pause(); // Immediately pause it so it's ready for later
       audioRef.current.currentTime = 0;
     }
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLockSentinelRef.current = await navigator.wakeLock.request(
+          'screen'
+        );
+        console.log('Screen Wake Lock is active.');
+      }
+    } catch (err: any) {
+      console.error(`${err.name}, ${err.message}`);
+    }
   };
 
   const handleStopTracking = () => {
     setIsTracking(false);
+
+    if (wakeLockSentinelRef.current) {
+      wakeLockSentinelRef.current.release();
+      wakeLockSentinelRef.current = null;
+      console.log('Screen Wake Lock has been released.');
+    }
   };
 
   return (
@@ -206,7 +305,6 @@ export default function Map() {
         zoom={13}
         style={{ height: '100vh', width: '100%' }}
       >
-        {/* If we have the user's position, center the map on them */}
         {userPosition && <ChangeView center={userPosition} zoom={15} />}
 
         <TileLayer
@@ -215,19 +313,35 @@ export default function Map() {
         />
 
         {/* Marker for each speed camera */}
-        {cameras.map((camera) => (
-          <Marker
-            key={camera.id}
-            position={[camera.latitude, camera.longitude]}
-            icon={cameraIcon}
-          >
-            <Popup>
-              <b>{camera.name}</b>
-              <br />
-              Speed Limit: {camera.speed_limit} mph
-            </Popup>
-          </Marker>
-        ))}
+        {cameras.map((camera) => {
+          const isAlerting = activeAlert?.id === camera.id;
+          return (
+            <React.Fragment key={camera.id}>
+              <Marker
+                position={[camera.latitude, camera.longitude]}
+                // Use the new alert icon if this camera is the one causing the alert
+                icon={isAlerting ? alertCameraIcon : cameraIcon}
+              >
+                <Popup>
+                  <b>{camera.name}</b>
+                  <br />
+                  Speed Limit: {camera.speed_limit} mph
+                </Popup>
+              </Marker>
+
+              {/* NEW: Add a Circle to show the alert radius */}
+              <Circle
+                center={[camera.latitude, camera.longitude]}
+                radius={500} // Radius in meters for the 0.5km threshold
+                pathOptions={{
+                  color: isAlerting ? 'red' : 'blue', // Change color on alert
+                  fillColor: isAlerting ? 'red' : 'blue',
+                  fillOpacity: 0.1,
+                }}
+              />
+            </React.Fragment>
+          );
+        })}
 
         {/* Marker for the user's location, only shows if position is known */}
         {userPosition && (
