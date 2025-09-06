@@ -11,6 +11,7 @@ import {
 } from 'react-leaflet';
 import { Icon, LatLngExpression } from 'leaflet';
 import React from 'react';
+import { useInstallPrompt } from '@/hooks/useInstallPrompt';
 
 // Helper function to calculate distance between two lat/lng points in kilometers
 function haversineDistance(
@@ -129,6 +130,8 @@ export default function Map() {
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const wakeLockSentinelRef = useRef<WakeLockSentinel | null>(null);
+
+  const { canInstall, handleInstall } = useInstallPrompt();
 
   // Initialize the Audio object on the client side
   useEffect(() => {
@@ -289,13 +292,69 @@ export default function Map() {
         />
       )}
       {!isTracking && (
-        <div className="fixed inset-0 z-[2000] bg-black bg-opacity-50 flex items-center justify-center">
-          <button
-            onClick={handleStartTracking}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-2xl py-4 px-8 rounded-lg shadow-lg"
-          >
-            Start Tracking
-          </button>
+        <div className="fixed inset-0 z-[2000] bg-black bg-opacity-70 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center flex flex-col items-center">
+            <h1 className="text-5xl font-bold text-gray-800">SlowGo.app</h1>
+            <p className="text-lg text-gray-600 mt-2">
+              Drive smarter in San Francisco.
+            </p>
+
+            <div className="text-left my-6 space-y-4">
+              <p className="flex items-start">
+                <span className="text-2xl mr-3">📍</span>
+                <span>
+                  This app alerts you to fixed speed cameras. For it to work,
+                  you must **allow location permissions** when prompted.
+                </span>
+              </p>
+              <p className="flex items-start">
+                <span className="text-2xl mr-3">📱</span>
+                <span>
+                  For the best experience, **install this app to your home
+                  screen** using your browser's "Add to Home Screen" or "Install
+                  App" option.
+                </span>
+              </p>
+            </div>
+            {canInstall && (
+              <button
+                onClick={handleInstall}
+                className="bg-green-600 hover:bg-green-700 text-white font-bold text-xl py-3 px-6 rounded-lg shadow-lg w-full mb-4"
+              >
+                Install App to Home Screen
+              </button>
+            )}
+            <button
+              onClick={handleStartTracking}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-2xl py-4 px-8 rounded-lg shadow-lg w-full"
+            >
+              Start Tracking
+            </button>
+
+            <div className="mt-6 text-sm text-gray-500">
+              <p>
+                Questions or issues?{' '}
+                <a
+                  href="mailto:slowgodev@gmail.com"
+                  className="underline text-blue-600"
+                >
+                  Email me
+                </a>
+                .
+              </p>
+              <p className="mt-2">
+                Love the app?{' '}
+                <a
+                  href="https://buymeacoffee.com/slowgodev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-blue-600"
+                >
+                  Support the project!
+                </a>
+              </p>
+            </div>
+          </div>
         </div>
       )}
       {isTracking && (
@@ -340,7 +399,7 @@ export default function Map() {
               {/* NEW: Add a Circle to show the alert radius */}
               <Circle
                 center={[camera.latitude, camera.longitude]}
-                radius={500} // Radius in meters for the 0.5km threshold
+                radius={304} // Radius in meters for the 0.5km threshold
                 pathOptions={{
                   color: isAlerting ? 'red' : 'blue', // Change color on alert
                   fillColor: isAlerting ? 'red' : 'blue',
