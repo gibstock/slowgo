@@ -1,0 +1,233 @@
+[
+  {
+    "id": 1,
+    "name": "Fulton Street from 42nd to 43rd Ave",
+    "latitude": 37.77171901759737,
+    "longitude": -122.50296364178197,
+    "speed_limit": 25
+  },
+  {
+    "id": 2,
+    "name": "Lincoln Way from 27th to 28th Ave",
+    "latitude": 37.76505695964494,
+    "longitude": -122.48639233398964,
+    "speed_limit": 30
+  },
+  {
+    "id": 3,
+    "name": "Geary Blvd from 7th to 8th Ave",
+    "latitude": 37.78098451463679,
+    "longitude": -122.46592997471403,
+    "speed_limit": 25
+  },
+  {
+    "id": 4,
+    "name": "Fulton St from 2nd Ave to Arguello Blvd",
+    "latitude": 37.77429205598493,
+    "longitude": -122.45897569434024,
+    "speed_limit": 25
+  },
+  {
+    "id": 5,
+    "name": "Geary Blvd from Webster to Buchanan St",
+    "latitude": 37.78476872235388,
+    "longitude": -122.43037242793022,
+    "speed_limit": 30
+  },
+  {
+    "id": 6,
+    "name": "Turk St from Van Ness Ave to Polk St",
+    "latitude": 37.78209734278582,
+    "longitude": -122.41977011163996,
+    "speed_limit": 20
+  },
+  {
+    "id": 7,
+    "name": "Bay St from Octavia to Gough St",
+    "latitude": 37.803654954915395,
+    "longitude": -122.4292968494866,
+    "speed_limit": 25
+  },
+  {
+    "id": 8,
+    "name": "Franklin St from Union to Green St",
+    "latitude": 37.79789316721665,
+    "longitude": -122.42560362678482,
+    "speed_limit": 25
+  },
+  {
+    "id": 9,
+    "name": "Columbus Ave from Lombard to Greenwich St",
+    "latitude": 37.8026218,
+    "longitude": -122.4135487,
+    "speed_limit": 20
+  },
+  {
+    "id": 10,
+    "name": "Broadway from Powell to Stockton St",
+    "latitude": 37.79756852750308,
+    "longitude": -122.40947985212034,
+    "speed_limit": 20
+  },
+  {
+    "id": 11,
+    "name": "The Embarcadero from Green to Battery St",
+    "latitude": 37.80235592347051,
+    "longitude": -122.40061561811318,
+    "speed_limit": 30
+  },
+  {
+    "id": 12,
+    "name": "Mission St from 8th to 9th St",
+    "latitude": 37.77691734810119,
+    "longitude": -122.41393772259127,
+    "speed_limit": 20
+  },
+  {
+    "id": 13,
+    "name": "10th St from Harrison to Folsom St",
+    "latitude": 37.77209590186271,
+    "longitude": -122.41193520569394,
+    "speed_limit": 25
+  },
+  {
+    "id": 14,
+    "name": "9th St from Bryant to Harrison St",
+    "latitude": 37.77195838575164,
+    "longitude": -122.40939015327668,
+    "speed_limit": 25
+  },
+  {
+    "id": 15,
+    "name": "7th St from Harrison to Folsom St",
+    "latitude": 37.775550619770854,
+    "longitude": -122.40637287180205,
+    "speed_limit": 25
+  },
+  {
+    "id": 16,
+    "name": "Harrison St from 4th to 5th St",
+    "latitude": 37.77988826184512,
+    "longitude": -122.40100000802178,
+    "speed_limit": 25
+  },
+  {
+    "id": 17,
+    "name": "Bryant St from 2nd to 3rd St",
+    "latitude": 37.7822184705917,
+    "longitude": -122.3947690943659,
+    "speed_limit": 25
+  },
+  {
+    "id": 18,
+    "name": "King St (EB only) from 4th to 5th St",
+    "latitude": 37.7760544,
+    "longitude": -122.3944043,
+    "speed_limit": 30
+  },
+  {
+    "id": 19,
+    "name": "Market St from Danvers to Douglass St",
+    "latitude": 37.76111498728806,
+    "longitude": -122.44173904608837,
+    "speed_limit": 30
+  },
+  {
+    "id": 20,
+    "name": "Guerrero St from 19th to 20th St",
+    "latitude": 37.7703161,
+    "longitude": -122.4248368,
+    "speed_limit": 25
+  },
+  {
+    "id": 21,
+    "name": "16th St from Bryant St to Potrero Ave",
+    "latitude": 37.76571454307856,
+    "longitude": -122.40908257039776,
+    "speed_limit": 25
+  },
+  {
+    "id": 22,
+    "name": "San Jose Ave from 29th to 30th St",
+    "latitude": 37.74314249973865,
+    "longitude": -122.42306178266047,
+    "speed_limit": 25
+  },
+  {
+    "id": 23,
+    "name": "Cesar Chavez St from Folsom to Harrison St",
+    "latitude": 37.74831597199858,
+    "longitude": -122.41261076286297,
+    "speed_limit": 25
+  },
+  {
+    "id": 24,
+    "name": "Cesar Chavez St from Indiana to Tennessee St",
+    "latitude": 37.75016115729511,
+    "longitude": -122.38950834164136,
+    "speed_limit": 25
+  },
+  {
+    "id": 25,
+    "name": "3rd St (NB only) from Key to Jamestown Ave",
+    "latitude": 37.719849606451916,
+    "longitude": -122.39683349920234,
+    "speed_limit": 25
+  },
+  {
+    "id": 26,
+    "name": "Bayshore Blvd (SB only) from 101 off-ramp to Tunnel Ave",
+    "latitude": 37.7139837000669,
+    "longitude": -122.39985331779761,
+    "speed_limit": 30
+  },
+  {
+    "id": 27,
+    "name": "Geneva Ave from Prague St to Brookdale Ave",
+    "latitude": 37.71187051141608,
+    "longitude": -122.42827628958747,
+    "speed_limit": 30
+  },
+  {
+    "id": 28,
+    "name": "Mission St from Ottawa Ave to Allison St",
+    "latitude": 37.71412409806843,
+    "longitude": -122.44321517471721,
+    "speed_limit": 20
+  },
+  {
+    "id": 29,
+    "name": "Alemany Blvd from Farragut to Naglee Ave",
+    "latitude": 37.71318436707032,
+    "longitude": -122.45044172468909,
+    "speed_limit": 30
+  },
+  {
+    "id": 30,
+    "name": "Ocean Ave from Frida Kahlo Way to Howth St",
+    "latitude": 37.72310156212385,
+    "longitude": -122.45090433822494,
+    "speed_limit": 25
+  },
+  {
+    "id": 31,
+    "name": "San Jose Ave from Santa Ynez to Ocean Ave",
+    "latitude": 37.72441994892423,
+    "longitude": -122.44360706256758,
+    "speed_limit": 25
+  },
+  {
+    "id": 32,
+    "name": "Monterey Blvd from Edna to Congo St",
+    "latitude": 37.73150425740762,
+    "longitude": -122.44203695119636,
+    "speed_limit": 25
+  },
+  {
+    "id": 33,
+    "name": "Sloat Blvd from 41st Ave to Skyline Blvd",
+    "latitude": 37.73397533744424,
+    "longitude": -122.49815037842512,
+    "speed_limit": 30
+  }
+]
