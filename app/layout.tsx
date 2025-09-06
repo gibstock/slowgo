@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   title: 'Slow Go',
   description: 'Get alerts for speed cameras in San Francisco.',
   manifest: '/manifest.json',
+  openGraph: {
+    type: 'website',
+    images: ['https://slowgo.app/windows11/LargeTile.scale-150.png'],
+    url: 'https://slowgo.app',
+    description: 'Get alerts for speed cameras in San Francisco.',
+    title: 'Slow Go',
+  },
 };
 
 export default function RootLayout({
