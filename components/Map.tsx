@@ -300,19 +300,24 @@ export default function Map() {
             </p>
 
             <div className="text-left my-6 space-y-4">
-              <p className="flex items-start">
+              <p className="flex items-start text-gray-800">
                 <span className="text-2xl mr-3">📍</span>
                 <span>
                   This app alerts you to fixed speed cameras. For it to work,
-                  you must **allow location permissions** when prompted.
+                  you must{' '}
+                  <span className="font-bold">allow location permissions</span>{' '}
+                  when prompted.
                 </span>
               </p>
-              <p className="flex items-start">
+              <p className="flex items-start text-gray-800">
                 <span className="text-2xl mr-3">📱</span>
                 <span>
-                  For the best experience, **install this app to your home
-                  screen** using your browser&apos;s &quot;Add to Home
-                  Screen&quot; or &quot;Install App&quot; option.
+                  For the best experience,{' '}
+                  <span className="font-bold">
+                    install this app to your home screen
+                  </span>{' '}
+                  using your browser&apos;s &quot;Add to Home Screen&quot; or
+                  &quot;Install App&quot; option.
                 </span>
               </p>
             </div>
