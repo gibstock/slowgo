@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import 'leaflet/dist/leaflet.css';
@@ -38,6 +39,11 @@ export default function RootLayout({
       >
         {children}
       </body>
+      <Script
+        src="https://analytics.slowgo.app/script.js"
+        data-website-id="6d262295-0997-49eb-8b03-42dfa5a2ce87"
+        strategy="afterInteractive"
+      />
     </html>
   );
 }
